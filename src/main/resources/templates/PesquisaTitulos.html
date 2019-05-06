@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlmns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/LayoutPadrao}">
+
+<head>
+<meta charset="UTF-8" />
+</head>
+
+<section layout:fragment="conteudo">
+<div layout:insert="MensagemGeral"></div>
+    <div class="card">    
+        <div class="card-title">
+            <h3 class="titulo-card">Pesquisa de Títulos</h3>
+            <a class="btn btn-link link-card" href="/titulos/novo">Novo Título</a>
+        </div>
+        <div class="card-body">
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Data Vencimento</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="titulo : ${titulos}">
+                        <th scope="row" th:text="${titulo.codigo}"></th>
+                        <td th:text="${titulo.descricao}"></td>
+                        <td th:text="${{titulo.dataVencimento}}"></td>
+                        <td th:text="|R$ ${{titulo.valor}}|"></td>
+                        <td><spam class="badge"
+                                th:text="${titulo.statusTitulo.descricao}"
+                                th:classappend="${titulo.pendente ? 'badge-danger' : 'badge-success'}"></spam>
+                        </td>
+                        <td><a class="btn btn-link btn-xs"
+                            th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}">
+                                <span class="oi oi-pencil"
+                                title="oi-pencil" aria-hidden="true"></span>
+                        </a> <a class="btn btn-link btn-xs"
+                            data-toggle="modal"
+                            data-target="#comfirmModal"
+                            th:attr="data-codigo=${titulo.codigo}, data-descricao=${titulo.descricao}">
+                                <span class="oi oi-delete"
+                                title="oi-delete" aria-hidden="true"></span>
+                        </a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"
+                            th:if="${#lists.isEmpty(titulos)}">Nenhum
+                            título foi encontrado</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div layout:insert="ConfirmDialog"></div>
+
+
+
+
+</section>
+
+
+
+</html>
