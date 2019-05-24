@@ -9,14 +9,31 @@
 </head>
 
 <section layout:fragment="conteudo">
-<div layout:insert="MensagemGeral"></div>
-    <div class="card">    
+    <div th:insert="MensagemGeral"></div>
+    <div class="card">
         <div class="card-title">
             <h3 class="titulo-card">Pesquisa de Títulos</h3>
-            <a class="btn btn-link link-card" href="/titulos/novo">Novo Título</a>
+            <a class="btn btn-link link-card" href="/titulos/novo">Novo
+                Título</a>
         </div>
         <div class="card-body">
-
+            <form method="get" class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-4 busca">
+                        <div class="input-group">
+                            <input class="form-control"
+                                placeholder="Qual título procura?"
+                                autofocus="autofocus"></input> <span
+                                class="input-group-btn">
+                                <button type="submit"
+                                    class="btn btn-default">
+                                    <i class="oi oi-magnifying-glass"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -34,20 +51,31 @@
                         <td th:text="${titulo.descricao}"></td>
                         <td th:text="${{titulo.dataVencimento}}"></td>
                         <td th:text="|R$ ${{titulo.valor}}|"></td>
-                        <td><spam class="badge"
+                        <td th:attr="data-role=${titulo.codigo}"><spam
+                                class="badge"
                                 th:text="${titulo.statusTitulo.descricao}"
                                 th:classappend="${titulo.pendente ? 'badge-danger' : 'badge-success'}"></spam>
                         </td>
                         <td><a class="btn btn-link btn-xs"
-                            th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}">
-                                <span class="oi oi-pencil"
-                                title="oi-pencil" aria-hidden="true"></span>
+                            th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}"
+                            title="Editar" rel="tooltip"
+                            data-placement="top"> <span
+                                class="oi oi-pencil" aria-hidden="true"></span>
                         </a> <a class="btn btn-link btn-xs"
                             data-toggle="modal"
                             data-target="#comfirmModal"
-                            th:attr="data-codigo=${titulo.codigo}, data-descricao=${titulo.descricao}">
-                                <span class="oi oi-delete"
-                                title="oi-delete" aria-hidden="true"></span>
+                            th:attr="data-codigo=${titulo.codigo}, data-descricao=${titulo.descricao}"
+                            title="Deletar" rel="tooltip"
+                            data-placement="top"> <span
+                                class="oi oi-delete" aria-hidden="true"></span>
+                        </a> <a
+                            class="btn btn-link btn-xs js-atualizar-status"
+                            th:if="${titulo.pendente}" title="Receber"
+                            th:attr="data-codigo=${titulo.codigo}"
+                            rel="tooltip" data-placement="top"
+                            th:href="@{/titulos/{codigo}/receber(codigo=${titulo.codigo})}">
+                                <span class="oi oi-check"
+                                aria-hidden="true"></span>
                         </a></td>
                     </tr>
                     <tr>
@@ -60,13 +88,8 @@
         </div>
     </div>
 
-    <div layout:insert="ConfirmDialog"></div>
-
-
-
+    <div th:insert="ConfirmDialog"></div>
 
 </section>
-
-
 
 </html>

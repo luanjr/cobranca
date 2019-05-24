@@ -27,8 +27,8 @@ public class Titulo
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long codigo;
 
-    @NotEmpty(message="Descrição é obrigatória!")
-    @Size(max = 60, message="A Descrição não pode conter mais que 60 caracteres!")
+    @NotEmpty(message = "Descrição é obrigatória!")
+    @Size(max = 60, message = "A Descrição não pode conter mais que 60 caracteres!")
     private String descricao;
 
     @NotNull(message = "Data de vencimento é obrigatória!")
@@ -36,8 +36,8 @@ public class Titulo
     @Temporal(TemporalType.DATE)
     private Date dataVencimento;
 
-    @NotNull(message="Valor é obrigatório!")
-    @DecimalMin(value = "0.01", message="Valor não pode ser menor que 0,01")
+    @NotNull(message = "Valor é obrigatório!")
+    @DecimalMin(value = "0.01", message = "Valor não pode ser menor que 0,01")
     @DecimalMax(value = "999999999.99", message = "O valor não pode ser maior que 999.999.999,99")
     @NumberFormat(pattern = "#,##0.00")
     private BigDecimal valor;

@@ -9,14 +9,17 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 
 @SpringBootApplication
-public class CobrancaApplication {
+public class CobrancaApplication
+{
 
-	public static void main(String[] args) {
-		SpringApplication.run(CobrancaApplication.class, args);
-	}
-	
-	@Bean
-    public LocaleResolver localeResolver(){
+    public static void main(String[] args)
+    {
+        SpringApplication.run(CobrancaApplication.class, args);
+    }
+
+    @Bean
+    public LocaleResolver localeResolver()
+    {
         return new FixedLocaleResolver(new Locale("pt", "BR"));
     }
 
