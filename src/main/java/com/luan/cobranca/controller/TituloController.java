@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.luan.cobranca.model.StatusTitulo;
 import com.luan.cobranca.model.Titulo;
 import com.luan.cobranca.repository.Titulos;
+import com.luan.cobranca.repository.filter.TituloFilter;
 import com.luan.cobranca.service.CadastroTituloService;
 
 @Controller
@@ -26,11 +28,9 @@ import com.luan.cobranca.service.CadastroTituloService;
 public class TituloController
 {
     private static final String CADASTRO_TITULO = "CadastroTitulo";
-    @Autowired
-    private Titulos titulos;
 
     @Autowired
-    private CadastroTituloService cadastrotitulo;
+    private CadastroTituloService cadastrotituloService;
 
     @RequestMapping("/novo")
     public ModelAndView novo()
@@ -42,9 +42,13 @@ public class TituloController
     }
 
     @RequestMapping
-    public ModelAndView pesquisa()
+    public ModelAndView pesquisa(@ModelAttribute("filtro") TituloFilter filtro)
     {
-        List<Titulo> titulosList = titulos.findAll(Sort.by("codigo"));
+        //String descricao = filtro.getDescricao() == null ? "" : filtro.getDescricao();
+        List<Titulo> titulosList = cadastrotituloService.filtrarTitulos(filtro.getDescricao());
+
+        //titulosList = titulos.findAll(Sort.by("codigo"));
+
         ModelAndView mv = new ModelAndView("PesquisaTitulos");
         mv.addObject("titulos", titulosList);
         return mv;
@@ -65,7 +69,7 @@ public class TituloController
             return CADASTRO_TITULO;
         }
         try {
-            cadastrotitulo.salvar(titulo);
+            cadastrotituloService.salvar(titulo);
         } catch (IllegalArgumentException e) {
             errors.reject("dataVencimento", null, e.getMessage());
             return CADASTRO_TITULO;
@@ -78,7 +82,7 @@ public class TituloController
     @RequestMapping(value = "{codigo}", method = RequestMethod.DELETE)
     public String excluir(@PathVariable Long codigo, RedirectAttributes attributes)
     {
-        cadastrotitulo.excluir(codigo);
+        cadastrotituloService.excluir(codigo);
         attributes.addFlashAttribute("mensagem", "Título excluido com sucesso!");
         return "redirect:/titulos";
     }
@@ -86,7 +90,7 @@ public class TituloController
     @RequestMapping(value = "/{codigo}/receber", method = RequestMethod.PUT)
     public @ResponseBody String receberTitulo(@PathVariable Long codigo)
     {
-        cadastrotitulo.receber(codigo);
+        cadastrotituloService.receber(codigo);
         return StatusTitulo.RECEBIDO.getDescricao();
     }
 

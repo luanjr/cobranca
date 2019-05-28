@@ -1,5 +1,7 @@
 package com.luan.cobranca.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -34,5 +36,10 @@ public class CadastroTituloService
         Titulo titulo = titulos.getOne(codigo);
         titulo.setStatusTitulo(StatusTitulo.RECEBIDO);
         titulos.save(titulo);
+    }
+
+    public List<Titulo> filtrarTitulos(String descricao)
+    {
+        return titulos.findByDescricaoContaining(descricao);
     }
 }
