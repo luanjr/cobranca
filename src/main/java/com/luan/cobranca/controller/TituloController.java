@@ -44,10 +44,7 @@ public class TituloController
     @RequestMapping
     public ModelAndView pesquisa(@ModelAttribute("filtro") TituloFilter filtro)
     {
-        //String descricao = filtro.getDescricao() == null ? "" : filtro.getDescricao();
         List<Titulo> titulosList = cadastrotituloService.filtrarTitulos(filtro.getDescricao());
-
-        //titulosList = titulos.findAll(Sort.by("codigo"));
 
         ModelAndView mv = new ModelAndView("PesquisaTitulos");
         mv.addObject("titulos", titulosList);

@@ -10,15 +10,15 @@
 
 <section layout:fragment="conteudo">
 
-    <form method="POST" action="/titulos" th:object="${titulo}">
+    <form method="POST" th:action="@{/titulos}" th:object="${titulo}">
         <div class="card">
             <div class="card-title">
                 <div th:insert="MensagemGeral"></div>
                 <div th:insert="MensagemErro"></div>
                 <div class="card-title">
                     <h3 class="titulo-card">Novo Título</h3>
-                    <a class="btn btn-link link-card" href="/titulos">Voltar
-                        para Pesquisa</a>
+                    <a class="btn btn-link link-card"
+                        th:href="@{/titulos}">Voltar para Pesquisa</a>
                 </div>
             </div>
             <div class="card-body">
